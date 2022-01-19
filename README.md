@@ -9,16 +9,11 @@
 {
   description = "My awesome Setup.";
   inputs = {
-    # Optional: To show how to override nixenv sources
+    # Required
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     home-manager.url = "github:nix-community/home-manager";
     darwin.url = "github:lnl7/nix-darwin/master";
-
-    nixenv.url = "github:tami5/nix-env"
-    # Optional: Changes sources
-    nixenv.inputs.nixpkgs.follows = "nixpkgs"
-    nixenv.inputs.home-manager.follows = "home-manager"
-    nixenv.inputs.darwin.follows = "darwins"
+    nix-env.url = "github:tami5/nix-env"
 
     # Example Overlay: Nix User Repository: Extra pacakges
     nur.url = "github:nix-community/nur";
@@ -29,14 +24,23 @@
 
   outputs = { self, ... }@inputs:
     let
-      inherit (inputs.nixenv.lib) initialize;
+      inherit (inputs.nix-env.lib) initialize;
       in initialize {
-        # List of system to generate for, default all systems defined in nixpkgs.
+        # Nixpkgs Source
+        nixpkgs = self.inputs.nixpkgs;
+        # Home-Manager Source
+        home-manager = self.inputs.home-manager;
+        # Nix-Darwin Source
+        darwin = self.inputs.darwin;
+        # List of system to generate for, default all systems defined in
+        nixpkgs.
         systems = [];
-        # List of context to generate for, default "homeManagerConfigurations" "nixosConfigurations" "darwinConfigurations"
+        # List of context to generate for, default "homeManagerConfigurations"
+        "nixosConfigurations" "darwinConfigurations"
         contexts = [];
         # Addtional overlays provided by packages such as neovim-nightly;
         overlays = [ nur.overlay neovim-nightly.overlay ];
+
         # Required paths for NixEnv to do it's magic
         paths = {
           # Where modules to be found.
@@ -57,7 +61,8 @@
           # Where overlays are found. overlay should return (final: prev: attrs)
           overlays = ./overlays;
 
-          # Where addtional packages are to be found Files here Common callPackage argument
+          # Where addtional packages are to be found. Each file must export a
+          derivation that can be processed by typeical callPackage function.
           packages = ./packages;
         };
     };
