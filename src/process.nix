@@ -1,4 +1,4 @@
-{ lib, vars, ... }:
+{ lib, util, vars, ... }:
 let
   inherit (vars) contextTypes;
   inherit (lib) id types;
@@ -6,8 +6,7 @@ let
   inherit (lib) mergeAttrs filterAttrs mapAttrs;
   inherit (lib) listToAttrs mapAttrsToList;
   inherit (lib.lists) any;
-  inherit (lib) isPath attrsHasElements getNixPathsFromDir;
-
+  inherit (util) isPath attrsHasElements getNixPathsFromDir;
 in {
   # Initialize Modules keys to functionss that can injected into
   # derivation contexts
