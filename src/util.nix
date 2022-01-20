@@ -27,6 +27,9 @@ in rec {
   # check if a set has values
   attrsHasElements = x: (length (attrValues x)) != 0;
 
+  # If given value is path then import it, else return it.
+  importOrReturn = x: if (isPath x) then import x else x;
+
   # Check if a given path has default.nix
   hasDefaultFile = path: pathIsRegularFile (path + "/default.nix");
 
