@@ -12,6 +12,9 @@ in rec {
   # Remove nils from a set.
   withoutNulls = _: v: v != null;
 
+  # Return true if a given val is of type path
+  isPath = val: (lib.types.path.check val);
+
   # if check val then return val else abort
   passOrX = fn: { check, msg, val }: assert (check val) || fn msg; val;
 
