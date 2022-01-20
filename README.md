@@ -24,8 +24,8 @@
 
   outputs = { self, ... }@inputs:
     let
-      inherit (inputs.nix-env.lib) initialize;
-      in initialize {
+      inherit (inputs.nix-env.lib) commnSystem;
+      in commonSystem {
         # Nixpkgs Source
         nixpkgs = self.inputs.nixpkgs;
         # Home-Manager Source
@@ -64,6 +64,9 @@
           # Where addtional packages are to be found. Each file must export a
           derivation that can be processed by typeical callPackage function.
           packages = ./packages;
+        };
+        configs = {
+          nixpkgs = import ./nix-config.nix; # or an attrs { ... }
         };
     };
 }
