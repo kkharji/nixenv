@@ -84,6 +84,7 @@ Working on Darwin. Further tests required
       # Optional: Home-Manager Configuration
       configs.home-manager = { useGlobalPkgs = true; };
 
+      # Roots doesn't have to exists to be defined here. define and create them later when you need them.
       # Where modules to be found.
       # NOTE!: modules are defined in keys { home, darwin, nixos, common };
       roots.modules = ./modules;

@@ -3,12 +3,12 @@ let
   inherit (vars) contextTypes;
   inherit (lib) isDerivation id types;
   inherit (lib) hasPrefix hasSuffix removeSuffix;
-  inherit (lib) mapAttrs' mapAttrs  mapAttrsToList;
+  inherit (lib) mapAttrs' mapAttrs mapAttrsToList;
   inherit (lib) mergeAttrs filterAttrs;
   inherit (lib.lists) any;
   inherit (lib) nameValuePair;
   inherit (lib) genAttrs getAttr hasAttr isAttrs attrValues;
-  inherit (lib) pathIsRegularFile;
+  inherit (lib) pathIsRegularFile pathIsDirectory;
   inherit (builtins) replaceStrings length readDir;
 in rec {
 
@@ -92,7 +92,11 @@ in rec {
             (if asPaths then absPath else (import absPath))
           else
             nameValuePair name null) paths;
-    in filterAttrs withoutNulls (processPaths (readDir path));
+
+    in if (pathIsDirectory path) then
+      filterAttrs withoutNulls (processPaths (readDir path))
+    else
+      { };
 
   # Initialize Modules keys to functionss that can injected into
   # derivation contexts
@@ -142,20 +146,16 @@ in rec {
 
   getUserProfiles = roots:
     let
-      dirPath = passOrAbort {
+      path = passOrAbort {
         check = types.path.check;
         msg = "Expected roots.profiles to be of type Path. Got something else";
         val = roots.profiles;
       };
-
-      dirs = filterAttrs
-        (n: v: v != null && !(hasPrefix "_" n) && (v == "directory"))
-        (builtins.readDir dirPath);
-
+      dirs = getNixPathsFromDir path { asPaths = true; };
     in passOrAbort {
       check = attrsHasElements;
-      msg = "No Profiles found in ${toString dirPath}";
-      val = mapAttrs (name: value: "${toString dirPath}/${name}") dirs;
+      msg = "No Profiles found in ${toString path}";
+      val = dirs;
     };
 
   getUserOverlays = roots:
