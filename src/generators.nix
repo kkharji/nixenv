@@ -10,7 +10,7 @@ let
 in rec {
   # Generators
   eachProfile = genAttrs (attrNames profiles);
-  eachCategory = genAttrs [ "modules" "profiles" "patches" ];
+  eachCategory = genAttrs [ "modules" "profiles" "patches" "services" ];
   eachSystem = genAttrs systems;
   eachContext = genAttrs contexts;
 

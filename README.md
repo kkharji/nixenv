@@ -93,6 +93,9 @@ Working on Darwin. Further tests required.
       # NOTE!: modules are defined in keys { home, darwin, nixos, common };
       roots.modules = ./modules;
 
+      # Where services are found. same as modules, but logical for services.
+      roots.services = ./services;
+
       # Where patches to be found. Pretty much like modules, execpt it
       # directly modifies contexts in some way.
       # Do not return a derivation!, but similar to modules.
@@ -136,7 +139,7 @@ Working on Darwin. Further tests required.
         home-manager.useGlobalPkgs = true;
       };
       roots = {
-        modules = ./modules/fam;
+        modules = ./modules;
         patches = ./patches;
         profiles = ./profiles;
         overlays = ./overlays;

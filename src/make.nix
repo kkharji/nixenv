@@ -10,6 +10,7 @@ let
         modulesByCategory.modules.home
         modulesByCategory.profiles.home
         modulesByCategory.patches.home
+        modulesByCategory.services.home
         userConfig
       ];
     };
@@ -48,6 +49,7 @@ in {
         (nixenvUser.common)
         (nixenvUser.darwin)
         (modulesByCategory.modules.darwin)
+        (modulesByCategory.services.darwin)
         (modulesByCategory.profiles.darwin)
         (modulesByCategory.patches.darwin)
         (user.config)
