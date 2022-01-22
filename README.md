@@ -1,10 +1,10 @@
-# Nix-Env
+# NixEnv
 
-(EXPERIENTIAL): Nix Flake Library to create Nix-based system regardless of system architecture or context.
+Nix Flake Library to create Nix-based system regardless of system architecture or context. (EXPERIENTIAL)
 
 ## Status:
 
-Working on Darwin. Further tests required
+Working on Darwin. Further tests required.
 
 ## Concepts
 
@@ -23,16 +23,20 @@ Working on Darwin. Further tests required
 - **Packages**: additional packages not available in nixpkgs.
 - **Overlays**: modifications to packages available in nixpkgs.
 
+## Examples
+
+- [My Personal setup](https://github.com/tami5/system)
+
+
 ## Getting Started
 
-
-### Full Example:
+### Detailed flake
 ```nix
 {
   description = "My awesome Setup.";
   inputs = {
     # Required: Avoid following master to avoid breaking changes
-    nixenv.url = "github:tami5/nix-env/release-1.0";
+    nixenv.url = "github:tami5/nixenv/release-1.0";
 
     # Optional Override of nixpkgs source.
     nixpkgs.url = "github:nixos/nixpkgs/master";
@@ -109,15 +113,14 @@ Working on Darwin. Further tests required
 }
 ```
 
-### Minimal Example:
+### Minimal flake:
 
-#### flake.nix
 ```nix
 {
   description = "Personal development and work environment.";
   inputs = {
     # Required: Avoid following master to avoid breaking changes
-    nixenv.url = "github:tami5/nix-env/release-1.0";
+    nixenv.url = "github:tami5/nixenv/release-1.0";
     nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
     nix-env.inputs.nixpkgs.follows = "nixpkgs";
   };
