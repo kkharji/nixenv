@@ -1,6 +1,6 @@
 # NixEnv
 
-Nix Flake Library to create Nix-based system regardless of system architecture or context. (EXPERIENTIAL)
+Nix Flake Library to create Nix-based system regardless of system architecture or context. (EXPERIMENTAL)
 
 ## Status:
 
