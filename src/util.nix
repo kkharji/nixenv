@@ -139,4 +139,39 @@ in rec {
     nixos = { ... }: { };
     home = { ... }: { };
   };
+
+  getUserProfiles = roots:
+    let
+      dirPath = passOrAbort {
+        check = types.path.check;
+        msg = "Expected roots.profiles to be of type Path. Got something else";
+        val = roots.profiles;
+      };
+
+      dirs = filterAttrs
+        (n: v: v != null && !(hasPrefix "_" n) && (v == "directory"))
+        (builtins.readDir dirPath);
+
+    in passOrAbort {
+      check = attrsHasElements;
+      msg = "No Profiles found in ${toString dirPath}";
+      val = mapAttrs (name: value: "${toString dirPath}/${name}") dirs;
+    };
+
+  getUserOverlays = roots:
+    (if (hasAttr "overlays" roots) then
+      let path = (getAttr "overlays" roots);
+      in (attrValues (getNixPathsFromDir path { }))
+    else
+      [ ]);
+
+  # TODO: Test
+  getUserPackages = roots: pkgs:
+    (if hasAttr "packages" roots then
+      let
+        path = (getAttr "packages" roots);
+        paths = getNixPathsFromDir path { asPaths = true; };
+      in mapAttrs (_: p: pkgs.callPackage p { }) paths
+    else
+      { });
 }
