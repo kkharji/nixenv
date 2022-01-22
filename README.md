@@ -170,3 +170,8 @@ nix build .\#homeManagerConfigurations.main
 # Build darwin
 nix build .\#darwinConfigurations.main
 ```
+
+## Credit
+
+- [@EdenEast](https://github.com/EdenEast/nyx)
+
