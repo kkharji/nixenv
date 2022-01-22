@@ -4,9 +4,27 @@
 
 ## Status:
 
-Just a draft of ideas, nothing is working yet.
+Working on Darwin. Further tests required
+
+## Concepts
+
+- **Top-level Profiles/Hosts**: The main entry to the setup. This is mixed within
+  profile directory, but unlike profiles it returns a derivation that will be
+  injected.
+- **Profile**: A collection of modules or configurations categorized by a profile.
+  For example, a desktop profile might have only desktop related packages,
+  modules, and/or configurations.
+- **Module**: A set of options and processors for theses options. For example,
+  an bash module might contain a set of options to control the bash environment
+  + ways to set configuration based on the options provided in **Top-level
+  Profiles/hosts**
+- **Patches**: Same as modules in term of being injected to user environment,
+  but unlike modules they directly override context options.
+- **Packages**: additional packages not available in nixpkgs.
+- **Overlays**: modifications to packages available in nixpkgs.
 
 ## Getting Started
+
 
 ### Full Example:
 ```nix
@@ -51,7 +69,7 @@ Just a draft of ideas, nothing is working yet.
       # Optional: Nix Configuration
       configs.nix = {
         binaryCaches = [ "https://cachix.cachix.org" ];
-        extraOptions = "experimental-features = nix-command flakes";
+        extraOptions = "experimental-features = nix-command flakes"; # This is the default.
       };
 
       # Optional: Nix-Darwin configuration
