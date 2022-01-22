@@ -43,8 +43,8 @@ in rec {
   # the result in a list.
   # source: @EdenEast
   # Example: existsOrDefault "name" {  } "default" => "default"
-  existsOrDefault = x: attrs: default:
-    if hasAttr x attrs then getAttr x attrs else default;
+  existsOrDefault = key: attrs: default:
+    if hasAttr key attrs then getAttr key attrs else default;
 
   # Given a path, and whether to import a given file return a list of imported
   # modules by the file/direcotry name or paths.
