@@ -3,11 +3,12 @@ let
   inherit (inputs.nixpkgs.lib) attrNames genAttrs;
   inherit (args) configs overlays packages systems contexts roots;
   inherit (util) existsOrDefault;
-  inherit (util) getUserProfiles getUserOverlays getModulesByCtx;
+  inherit (util) getUserProfiles getUserOverlays getModulesByCtx getUserPackages;
 
   profiles = getUserProfiles roots;
 
-in rec {
+in
+rec {
   # Generators
   eachProfile = genAttrs (attrNames profiles);
   eachCategory = genAttrs [ "modules" "profiles" "patches" "services" ];
@@ -19,11 +20,14 @@ in rec {
     (category: getModulesByCtx (existsOrDefault category roots null));
 
   # Overlays by given system
-  overlaysBySystem = eachSystem (system:
-    let
-      user-overlays = getUserOverlays roots;
-      extrn-packages = (map (p: (_: prev: p."${system}" // prev)) packages);
-    in overlays ++ user-overlays ++ extrn-packages);
+  overlaysBySystem = eachSystem
+    (system:
+      let
+        user-overlays = getUserOverlays roots;
+        user-packages = getUserPackages roots pkgsBySystem."${system}";
+        extrn-packages = (map (p: (_: prev: p."${system}" // prev)) packages);
+      in
+      overlays ++ user-overlays ++ extrn-packages ++ [ (_: _: user-packages) ]);
 
   # Packages by given system
   pkgsBySystem = eachSystem (system:

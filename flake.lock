@@ -1,26 +1,5 @@
 {
   "nodes": {
-    "darwin": {
-      "inputs": {
-        "nixpkgs": [
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1642495030,
-        "narHash": "sha256-u1ZlFbLWzkM6zOfuZ1tr0tzTuDWucOYwALPWDWLorkE=",
-        "owner": "lnl7",
-        "repo": "nix-darwin",
-        "rev": "bcdb6022b3a300abf59cb5d0106c158940f5120e",
-        "type": "github"
-      },
-      "original": {
-        "owner": "lnl7",
-        "ref": "master",
-        "repo": "nix-darwin",
-        "type": "github"
-      }
-    },
     "home-manager": {
       "inputs": {
         "nixpkgs": [
@@ -37,31 +16,52 @@
       },
       "original": {
         "owner": "nix-community",
-        "ref": "master",
         "repo": "home-manager",
+        "rev": "7eb5106548eaab99ebeb21c87f93092de54fe931",
+        "type": "github"
+      }
+    },
+    "nix-darwin": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1642495030,
+        "narHash": "sha256-u1ZlFbLWzkM6zOfuZ1tr0tzTuDWucOYwALPWDWLorkE=",
+        "owner": "lnl7",
+        "repo": "nix-darwin",
+        "rev": "bcdb6022b3a300abf59cb5d0106c158940f5120e",
+        "type": "github"
+      },
+      "original": {
+        "owner": "lnl7",
+        "repo": "nix-darwin",
+        "rev": "bcdb6022b3a300abf59cb5d0106c158940f5120e",
         "type": "github"
       }
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1642774431,
-        "narHash": "sha256-344kg4Ba69454mFT6uTFo0Pg7i5KvUfForYl6qNLzb0=",
+        "lastModified": 1642850477,
+        "narHash": "sha256-F468orn2xYr7hmx8d5p3Sq7HyC8ttxF4CzY48G2vpbg=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "2f17ba1d36bdfe3f54f253ca2592262b1d91dcc2",
+        "rev": "f42a9e258664bf1cabae305275143384e959ed09",
         "type": "github"
       },
       "original": {
         "owner": "nixos",
-        "ref": "master",
         "repo": "nixpkgs",
+        "rev": "f42a9e258664bf1cabae305275143384e959ed09",
         "type": "github"
       }
     },
     "root": {
       "inputs": {
-        "darwin": "darwin",
         "home-manager": "home-manager",
+        "nix-darwin": "nix-darwin",
         "nixpkgs": "nixpkgs"
       }
     }
