@@ -67,6 +67,11 @@ Working on Darwin. Further tests required.
       # List of overlays provided by packages such as neovim-nightly;
       overlays = [ inputs.nur.overlay inputs.neovim-nightly.overlay ];
 
+      # EXPERIMENTAL: Injects variable called xpkgs to access x86 packages in
+      # aarch64 systems. for when users can run the x86 pacakges and some
+      # pacakges are not yet supported
+      injectX86AsXpkgs = false;
+
       # List of addtional pacakges to be made merge into system pkgs.
       packages = [ inputs.mkalias.packages ];
 
@@ -79,7 +84,7 @@ Working on Darwin. Further tests required.
       # Optional: Nix-Darwin configuration
       configs.darwin = {
         # Required for multi-user installation.
-        multi-user = true;
+        multi-user = false;
       };
 
       # Optional: NixPkgs Configuration

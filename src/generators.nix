@@ -1,12 +1,12 @@
 { inputs, util, args, ... }:
 let
-  inherit (inputs.nixpkgs.lib) attrNames genAttrs;
-  inherit (args) configs overlays packages systems contexts roots;
+  inherit (inputs.nixpkgs.lib) attrNames genAttrs mkIf lists;
+  inherit (inputs.nixpkgs.lib.strings) replaceStrings hasPrefix;
+  inherit (args) configs overlays packages systems contexts roots injectX86AsXpkgs;
   inherit (util) existsOrDefault;
   inherit (util) getUserProfiles getUserOverlays getModulesByCtx getUserPackages;
 
   profiles = getUserProfiles roots;
-
 in
 rec {
   # Generators
@@ -36,6 +36,13 @@ rec {
       config = configs.nixpkgs;
       overlays = overlaysBySystem."${system}";
     });
+
+  # Temporary: Get x86_64 equivalent packages
+  xpkgsBySystem = eachSystem
+    (system:
+      if injectX86AsXpkgs && (hasPrefix "aarch64" system) then
+        pkgsBySystem."${(replaceStrings [ "aarch64" ] [ "x86_64" ] system)}"
+      else { });
 
   # User by profile name
   userByProfile = eachProfile (profileName: {

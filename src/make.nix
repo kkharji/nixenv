@@ -16,23 +16,25 @@ let
     };
   # Built-in Module to handle profile setup.
   nixenvUser = import ./user.nix { inherit mkUserHome; };
-in {
+in
+{
 
-  homeManagerConfigurations = { system, user, pkgs }: {
+  homeManagerConfigurations = { system, user, pkgs, xpkgs }: {
     activationPackage = { };
     config = user.config;
     type = "Home";
   };
 
-  nixosConfigurations = { system, user, pkgs }: {
+  nixosConfigurations = { system, user, pkgs, xpkgs }: {
     config = { system = { build = { toplevel = { type = "nixos"; }; }; }; };
     config' = user.config;
     type = "Nixos";
   };
 
-  darwinConfigurations = { system, user, pkgs }:
-    let specialArgs = { inherit system user pkgs; };
-    in inputs.nix-darwin.lib.darwinSystem {
+  darwinConfigurations = { system, user, pkgs, xpkgs }:
+    let specialArgs = { inherit system user pkgs xpkgs; };
+    in
+    inputs.nix-darwin.lib.darwinSystem {
       inherit system specialArgs;
       modules = [
         ({ pkgs, ... }: {
