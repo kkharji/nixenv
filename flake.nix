@@ -20,32 +20,28 @@
       vars = import ./src/vars.nix;
       util = import ./src/util.nix { inherit lib vars; };
       applyDefaults = args:
-        lib.attrsets.recursiveUpdate
-          {
-            injectX86AsXpkgs = false;
-            systems = vars.supportedSystems;
-            contexts = vars.supportedContexts;
-            configs.nix = {
-              extraOptions = "experimental-features = nix-command flakes";
-            };
-            configs.nixpkgs = { };
-            configs.home-manager = { };
-            configs.nix-darwin = { };
-            overlays = [ ];
-            packages = [ ];
-          }
-          args;
-    in
-    {
+        lib.attrsets.recursiveUpdate {
+          injectX86AsXpkgs = false;
+          systems = vars.supportedSystems;
+          contexts = vars.supportedContexts;
+          configs.nix = {
+            extraOptions = "experimental-features = nix-command flakes";
+          };
+          configs.nixpkgs = { };
+          configs.home-manager = { };
+          configs.nix-darwin = { };
+          overlays = [ ];
+          packages = [ ];
+        } args;
+    in {
       lib.commonSystem = { roots, ... }@userArgs:
         let
           args = applyDefaults userArgs;
           gen = import ./src/generators.nix { inherit inputs args util; };
-        in
-        {
+        in {
           # Produce map of <system>.<context>.<profile>
           packages = with gen;
-            # For Each System type:
+          # For Each System type:
             eachSystem (system:
               # and for each context:
               eachContext (context:
@@ -56,8 +52,7 @@
                     make = makeByCtx."${context}";
                     pkgs = pkgsBySystem."${system}";
                     xpkgs = xpkgsBySystem.${system};
-                  in
-                  make { inherit system user pkgs xpkgs; })));
+                  in make { inherit system user pkgs xpkgs; })));
         };
     };
 }
