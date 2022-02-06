@@ -4,20 +4,10 @@ let
   inherit (util) existsOrDefault;
 
   # Return function that can be used to inject and load home modules.
-  mkUserHome = userConfig:
-    { ... }: {
-      imports = [
-        modulesByCategory.modules.home
-        modulesByCategory.profiles.home
-        modulesByCategory.patches.home
-        modulesByCategory.services.home
-        userConfig
-      ];
-    };
+  mkUserHome = userConfig: { ... }: { imports = [ userConfig ]; };
   # Built-in Module to handle profile setup.
   nixenvUser = import ./user.nix { inherit mkUserHome; };
-in
-{
+in {
 
   homeManagerConfigurations = { system, user, pkgs, xpkgs }: {
     activationPackage = { };
@@ -33,8 +23,7 @@ in
 
   darwinConfigurations = { system, user, pkgs, xpkgs }:
     let specialArgs = { inherit system user pkgs xpkgs; };
-    in
-    inputs.nix-darwin.lib.darwinSystem {
+    in inputs.nix-darwin.lib.darwinSystem {
       inherit system specialArgs;
       modules = [
         ({ pkgs, ... }: {
@@ -46,6 +35,12 @@ in
         ({
           home-manager = configs.home-manager // {
             extraSpecialArgs = specialArgs;
+            sharedModules = [
+              modulesByCategory.modules.home
+              modulesByCategory.profiles.home
+              modulesByCategory.patches.home
+              modulesByCategory.services.home
+            ];
           };
         })
         (nixenvUser.common)
@@ -59,4 +54,3 @@ in
     };
 
 }
-
