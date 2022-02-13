@@ -4,7 +4,16 @@ let
   inherit (util) existsOrDefault;
 
   # Return function that can be used to inject and load home modules.
-  mkUserHome = userConfig: { ... }: { imports = [ userConfig ]; };
+  mkUserHome = userConfig:
+    { ... }: {
+
+      imports = [ userConfig ];
+      # For compatibility with nix-shell, nix-build, etc.
+      home.file.".nixpkgs".source = inputs.nixpkgs;
+      home.sessionVariables."NIX_PATH" =
+        "nixpkgs=$HOME/.nixpkgs\${NIX_PATH:+:}$NIX_PATH";
+
+    };
   # Built-in Module to handle profile setup.
   nixenvUser = import ./user.nix { inherit mkUserHome; };
 in {

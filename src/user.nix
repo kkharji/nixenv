@@ -34,23 +34,30 @@ in {
 
   # Only Applied darwin system.
   darwin = { lib, pkgs, config, ... }: {
-    config = lib.mkMerge [({
-      # Enable zsh in order to add /run/current-system/sw/bin to $PATH
-      # TODO: should this be default??
-      programs.zsh.enable = true;
+    config = lib.mkMerge [
+      ({
+        # Enable zsh in order to add /run/current-system/sw/bin to $PATH
+        # TODO: should this be default??
+        programs.zsh.enable = true;
 
-      # Setup user user
-      users.users = with config.nixenv; {
-        "${username}" = {
-          description = "...";
-          shell = shell;
-          home = "/Users/${username}";
+        # Setup user user
+        users = with config.nixenv; {
+          users = {
+            "${username}" = {
+              description = "...";
+              shell = shell;
+              home = "/Users/${username}";
+            };
+          };
+          # Do not allow users to be added or modified except through Nix configuration.
+          # mutableUsers = false;
         };
-      };
-    })
-    (lib.mkIf (!isNull config.nixenv.home)
-      (injectHome config.nixenv.username config.nixenv.home))
-    # (tryToInjectHome config.nixenv.username config.nixenv.home)
-      ];
+
+        nix.settings.trusted-users = [ "${config.nixenv.username}" ];
+      })
+      (lib.mkIf (!isNull config.nixenv.home)
+        (injectHome config.nixenv.username config.nixenv.home))
+      # (tryToInjectHome config.nixenv.username config.nixenv.home)
+    ];
   };
 }
