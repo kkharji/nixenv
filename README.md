@@ -38,13 +38,20 @@ Working on Darwin. Further tests required.
     # Required: Avoid following master to avoid breaking changes
     nixenv.url = "github:tami5/nixenv/release-1.0";
 
-    # Optional Override of nixpkgs source.
+    # Require: nixpkgs source.
     nixpkgs.url = "github:nixos/nixpkgs/master";
-    nix-env.inputs.nixpkgs.follows = "nixpkgs";
 
-    # Optional Override of home-manager source.
-    home-manager.url = "github:nix-community/home-manager/master";
-    nix-env.inputs.home-manager.follows = "home-manager";
+    # Require: home-manager source.
+    home-manager = {
+      url = "github:nix-community/home-manager";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    # Require: darwin source.
+    nix-darwin = {
+      url = "github:lnl7/nix-darwin";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     # Optional example Overlays:
     nur.url = "github:nix-community/nur";
@@ -55,6 +62,7 @@ Working on Darwin. Further tests required.
   };
   outputs = { self, ... }@inputs:
     inputs.nixenv.lib.commonSystem {
+      inherit nixpkgs nix-darwin home-manager;
       # Optional: List of context to generate for,
       # default: "homeManagerConfigurations" "nixosConfigurations"
       # "darwinConfigurations". Do not set empty!!!.
@@ -68,11 +76,11 @@ Working on Darwin. Further tests required.
       overlays = [ inputs.nur.overlay inputs.neovim-nightly.overlay ];
 
       # EXPERIMENTAL: Injects variable called xpkgs to access x86 packages in
-      # aarch64 systems. for when users can run the x86 pacakges and some
-      # pacakges are not yet supported
+      # aarch64 systems. for when users can run the x86 packages and some
+      # packages are not yet supported
       injectX86AsXpkgs = false;
 
-      # List of addtional pacakges to be made merge into system pkgs.
+      # List of additional packages to be made merge into system pkgs.
       packages = [ inputs.mkalias.packages ];
 
       # Optional: Nix Configuration
@@ -101,21 +109,21 @@ Working on Darwin. Further tests required.
       # Where services are found. same as modules, but logical for services.
       roots.services = ./services;
 
-      # Where patches to be found. Pretty much like modules, execpt it
+      # Where patches to be found. Pretty much like modules, except it
       # directly modifies contexts in some way.
       # Do not return a derivation!, but similar to modules.
       roots.patches = ./patches;
 
       # Where profiles and top-level derivations to be found.
-      # Profiles are an addtional abstraction layer for grouping modules.
+      # Profiles are an additional abstraction layer for grouping modules.
       # NOTE!: Profiles that return derivations will be used as top level profile. i.e. to setup system.
       roots.profiles = ./profiles;
 
       # Where overlays are found. overlay should return (final: prev: attrs)
       roots.overlays = ./overlays;
 
-      # Where addtional packages are to be found. Each file must export a
-      # derivation that can be processed by typeical callPackage function.
+      # Where additional packages are to be found. Each file must export a
+      # derivation that can be processed by typical callPackage function.
       roots.packages = ./packages;
     };
 }
@@ -130,10 +138,12 @@ Working on Darwin. Further tests required.
     # Required: Avoid following master to avoid breaking changes
     nixenv.url = "github:tami5/nixenv/release-1.0";
     nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
-    nix-env.inputs.nixpkgs.follows = "nixpkgs";
+    nix-darwin.url = "github:lnl7/nix-darwin";
+    home-manager.url = ""github:nix-community/home-manager";
   };
   outputs = { self, ... }@inputs:
     inputs.nix-env.lib.commonSystem {
+      inherit nixpkgs nix-darwin home-manager;
       overlays = [ ];
       packages = [ ];
       configs = {
