@@ -3,10 +3,8 @@
     "Create common system regardless of system architecture or context.";
 
   outputs = { self, ... }: {
-    lib.commonSystem =
-      { roots, nixpkgs, home-manager, nix-darwin, ... }@userArgs:
+    lib.commonSystem = { roots, inputs, ... }@userArgs:
       let
-        inputs = { inherit home-manager nix-darwin nixpkgs; };
         inherit (inputs.nixpkgs) lib;
         vars = import ./src/vars.nix;
         util = import ./src/util.nix { inherit lib vars; };

@@ -59,10 +59,13 @@ Working on Darwin. Further tests required.
 
     # Optional example packages
     mkalias.url = "github:reckenrode/mkalias";
+
+    # Custom modules
+    base16.url = "github:tami5/base16";
   };
   outputs = { self, ... }@inputs:
     inputs.nixenv.lib.commonSystem {
-      inherit nixpkgs nix-darwin home-manager;
+      inherit inputs;
       # Optional: List of context to generate for,
       # default: "homeManagerConfigurations" "nixosConfigurations"
       # "darwinConfigurations". Do not set empty!!!.
@@ -74,6 +77,9 @@ Working on Darwin. Further tests required.
 
       # List of overlays provided by packages such as neovim-nightly;
       overlays = [ inputs.nur.overlay inputs.neovim-nightly.overlay ];
+
+      # List of external modules. modules key must provide home,darwin,common like local modules
+      modules = [ inputs.base16.modules ];
 
       # EXPERIMENTAL: Injects variable called xpkgs to access x86 packages in
       # aarch64 systems. for when users can run the x86 packages and some
@@ -143,7 +149,7 @@ Working on Darwin. Further tests required.
   };
   outputs = { self, ... }@inputs:
     inputs.nix-env.lib.commonSystem {
-      inherit nixpkgs nix-darwin home-manager;
+      inherit inputs;
       overlays = [ ];
       packages = [ ];
       configs = {

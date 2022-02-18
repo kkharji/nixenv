@@ -31,7 +31,7 @@ in {
   };
 
   darwinConfigurations = { system, user, pkgs, xpkgs }:
-    let specialArgs = { inherit system user pkgs xpkgs; };
+    let specialArgs = { inherit system user pkgs xpkgs; } // inputs;
     in inputs.nix-darwin.lib.darwinSystem {
       inherit system specialArgs;
       modules = [
