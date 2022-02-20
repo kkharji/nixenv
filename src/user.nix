@@ -53,7 +53,7 @@ in {
           # mutableUsers = false;
         };
 
-        nix.settings.trusted-users = [ "${config.nixenv.username}" ];
+        # nix.settings.trusted-users = [ "${config.nixenv.username}" ];
       })
       (lib.mkIf (!isNull config.nixenv.home)
         (injectHome config.nixenv.username config.nixenv.home))

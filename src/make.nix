@@ -1,4 +1,4 @@
-{ inputs, util, configs, modulesByCategory, ... }:
+{ inputs, util, configs, modulesByCategory, extrnModules, ... }:
 let
   inherit (inputs.nixpkgs.lib) mkIf;
   inherit (util) existsOrDefault;

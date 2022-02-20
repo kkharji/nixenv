@@ -60,7 +60,7 @@ Working on Darwin. Further tests required.
     # Optional example packages
     mkalias.url = "github:reckenrode/mkalias";
 
-    # Custom modules
+    # Custom modules TODO: support
     base16.url = "github:tami5/base16";
   };
   outputs = { self, ... }@inputs:
@@ -79,6 +79,7 @@ Working on Darwin. Further tests required.
       overlays = [ inputs.nur.overlay inputs.neovim-nightly.overlay ];
 
       # List of external modules. modules key must provide home,darwin,common like local modules
+      # NOTE: not support yet
       modules = [ inputs.base16.modules ];
 
       # EXPERIMENTAL: Injects variable called xpkgs to access x86 packages in

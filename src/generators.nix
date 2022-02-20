@@ -16,6 +16,10 @@ in rec {
   eachSystem = genAttrs systems;
   eachContext = genAttrs contexts;
 
+  # modules = [ inputs.base16.modules ];
+  extrnModules = genAttrs util.vars.contextTypes
+    (c: (map (v: (existsOrDefault "${c}" v ({ ... }: { }))) args.modules));
+
   # Modules By Cateogry
   modulesByCategory = eachCategory
     (category: getModulesByCtx (existsOrDefault category roots null));
@@ -51,6 +55,7 @@ in rec {
   });
 
   # Make Function by Context
-  makeByCtx =
-    import ./make.nix { inherit inputs util configs modulesByCategory; };
+  makeByCtx = import ./make.nix {
+    inherit inputs util configs modulesByCategory extrnModules;
+  };
 }
