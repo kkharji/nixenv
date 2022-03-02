@@ -1,7 +1,7 @@
 { mkUserHome }:
 let
   injectHome = username: userConfig: {
-    home-manager.users."${username}" = (mkUserHome userConfig);
+    home-manager.users."${username}" = (mkUserHome username userConfig);
   };
 
 in {

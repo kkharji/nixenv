@@ -18,7 +18,7 @@ in rec {
 
   # modules = [ inputs.base16.modules ];
   extrnModules = genAttrs util.vars.contextTypes
-    (c: (map (v: (existsOrDefault "${c}" v ({ ... }: { }))) args.modules));
+    (c: (map (v: existsOrDefault "${c}" v ({ _ }: { })) args.modules));
 
   # Modules By Cateogry
   modulesByCategory = eachCategory
@@ -29,8 +29,8 @@ in rec {
     let
       user-overlays = getUserOverlays roots;
       user-packages = getUserPackages roots pkgsBySystem."${system}";
-      extrn-packages = (map (p: (_: prev: p."${system}" // prev)) packages);
-    in overlays ++ user-overlays ++ extrn-packages
+      extrn-packages = map (p: (_: prev: p."${system}" // prev)) packages;
+    in user-overlays ++ overlays ++ extrn-packages
     ++ [ (_: _: user-packages) ]);
 
   # Packages by given system

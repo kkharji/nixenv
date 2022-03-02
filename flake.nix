@@ -6,23 +6,25 @@
     lib.commonSystem = { roots, inputs, ... }@userArgs:
       let
         inherit (inputs.nixpkgs) lib;
+        inherit (lib.attrsets) recursiveUpdate;
+
         vars = import ./src/vars.nix;
         util = import ./src/util.nix { inherit lib vars; };
-        applyDefaults = args:
-          lib.attrsets.recursiveUpdate {
-            injectX86AsXpkgs = false;
-            systems = vars.supportedSystems;
-            contexts = vars.supportedContexts;
-            configs.nix = {
-              extraOptions = "experimental-features = nix-command flakes";
-            };
-            configs.nixpkgs = { };
-            configs.home-manager = { };
-            configs.nix-darwin = { };
-            overlays = [ ];
-            packages = [ ];
-            modules = [ ];
-          } args;
+
+        applyDefaults = recursiveUpdate {
+          injectX86AsXpkgs = false;
+          systems = vars.supportedSystems;
+          contexts = vars.supportedContexts;
+          configs.nix = {
+            extraOptions = "experimental-features = nix-command flakes";
+          };
+          configs.nixpkgs = { };
+          configs.home-manager = { };
+          configs.nix-darwin = { };
+          overlays = [ ];
+          packages = [ ];
+          modules = [ ];
+        };
         args = applyDefaults userArgs;
         gen = import ./src/generators.nix { inherit inputs args util; };
       in {
