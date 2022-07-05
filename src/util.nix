@@ -55,8 +55,8 @@ in rec {
   #
   # Example:
   #  getNixPathsFromDir ./modules { } => { lf = { ... }; neovim = { ... };  ... }
-  #  getNixPathsFromDir ./modules { withImport = false; } => { lf = /Users/tami5/system2/modules/lf;  ... }
-  #  getNixPathsFromDir ./modules { withSelf = true; } => { modules = /Users/tami5/system2/modules/default.nix; ...}
+  #  getNixPathsFromDir ./modules { withImport = false; } => { lf = /Users/kkharji/system2/modules/lf;  ... }
+  #  getNixPathsFromDir ./modules { withSelf = true; } => { modules = /Users/kkharji/system2/modules/default.nix; ...}
   getNixPathsFromDir = path:
     { asPaths ? false, withSelf ? false, ... }:
     let

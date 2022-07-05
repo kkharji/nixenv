@@ -25,7 +25,7 @@ Working on Darwin. Further tests required.
 
 ## Examples
 
-- [My Personal setup](https://github.com/tami5/system)
+- [My Personal setup](https://github.com/kkharji/system)
 
 
 ## Getting Started
@@ -36,7 +36,7 @@ Working on Darwin. Further tests required.
   description = "My awesome Setup.";
   inputs = {
     # Required: Avoid following master to avoid breaking changes
-    nixenv.url = "github:tami5/nixenv/release-1.0";
+    nixenv.url = "github:kkharji/nixenv/release-1.0";
 
     # Require: nixpkgs source.
     nixpkgs.url = "github:nixos/nixpkgs/master";
@@ -61,7 +61,7 @@ Working on Darwin. Further tests required.
     mkalias.url = "github:reckenrode/mkalias";
 
     # Custom modules TODO: support
-    base16.url = "github:tami5/base16";
+    base16.url = "github:kkharji/base16";
   };
   outputs = { self, ... }@inputs:
     inputs.nixenv.lib.commonSystem {
@@ -143,7 +143,7 @@ Working on Darwin. Further tests required.
   description = "Personal development and work environment.";
   inputs = {
     # Required: Avoid following master to avoid breaking changes
-    nixenv.url = "github:tami5/nixenv/release-1.0";
+    nixenv.url = "github:kkharji/nixenv/release-1.0";
     nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
     nix-darwin.url = "github:lnl7/nix-darwin";
     home-manager.url = ""github:nix-community/home-manager";
@@ -177,7 +177,7 @@ Working on Darwin. Further tests required.
   # Common Context i.e. darwin or nixos.
 
   # If this isn't defined, profile name will be used as username.
-  nixenv.username = "tami5";
+  nixenv.username = "kkharji";
 
   nixenv.home = { pkgs, ... }: {
     # Home Manager Context
